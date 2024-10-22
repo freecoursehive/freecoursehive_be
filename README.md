@@ -84,7 +84,7 @@
 
 
    ```
-   python script.py
+   python src/script.py
    
    ```
 
