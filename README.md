@@ -158,7 +158,7 @@
   - Submit a pull request for review.
 
 
-  Please refer to our CONTRIBUTING.md for detailed contribution guidelines.
+  Please refer to our [CONTRIBUTING.md](https://pages.github.com/](https://github.com/freecoursehive/freecoursehive_be/blob/master/CONTRIBUTING.md)) for detailed contribution guidelines.
 
 
 ### License
