@@ -28,13 +28,12 @@ def create_app():
         try:
            
             # Parallel execution
-            with ThreadPoolExecutor(max_workers=2) as executor:
+            with ThreadPoolExecutor(max_workers=3) as executor:
                 coursera_future = executor.submit(scraper.get_coursera_courses)
                 coursera_courses = coursera_future.result()
 
                 harvard_future = executor.submit(scraper.get_harvard_courses)
                 harvard_courses = harvard_future.result()
-
 
                 all_courses = coursera_courses + harvard_courses
                 random.shuffle(all_courses)
