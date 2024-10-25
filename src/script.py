@@ -5,30 +5,31 @@ import logging
 from concurrent.futures import ThreadPoolExecutor
 import os
 from dotenv import load_dotenv
+from flask_caching import Cache  # Import Flask-Caching
 
 from course_scraper import CourseScraper
 
-
 load_dotenv()
-
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 def create_app():
     app = Flask(__name__)
     CORS(app)
-    scraper = CourseScraper()
 
+    # Cache configuration
+    app.config['CACHE_TYPE'] = 'SimpleCache'  # or another cache type
+    cache = Cache(app)  # Initialize cache
+
+    scraper = CourseScraper(cache)  # Pass the cache to the scraper
 
     @app.route("/api/courses", methods=["GET"])
     def get_courses():
         try:
-           
             # Parallel execution
-            with ThreadPoolExecutor(max_workers=3) as executor:
+            with ThreadPoolExecutor(max_workers=2) as executor:
                 coursera_future = executor.submit(scraper.get_coursera_courses)
                 coursera_courses = coursera_future.result()
 
@@ -45,10 +46,8 @@ def create_app():
                 "message": "An error occurred while fetching courses",
                 "error": str(e)
             }), 500
-        
 
     return app
-
 
 if __name__ == "__main__":
     app = create_app()
